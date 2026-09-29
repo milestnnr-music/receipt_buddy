@@ -2,6 +2,10 @@
 
 **Video:** Paste the URL of your demo here before you submit. CS50x requires a YouTube video of 3 minutes or less. An unlisted video is fine. The URL has to be in this file.
 
+"Do you want your receipt?"
+Such a common question - and I always say yes for "safe keeping". 
+But where the heck should you keep them?!
+
 Receipt Buddy is a phone app that turns a photo of a grocery receipt into a structured list. You scan a receipt, the app reads the text on the page, and it separates that text into a date, a store address, a total, and individual items with prices. The Summary tab shows that result. From there you can save it as a Markdown file and hand it to the phone’s share sheet.
 
 The app is built with React Native and Expo. Navigation uses Expo Router. Scanning uses a document scanner that crops the page. Text recognition runs on the device with ML Kit, so the receipt text is not sent to a server. A small local Expo module, `item-tagging`, finds a street address in the header text.
@@ -17,22 +21,50 @@ npx expo run:ios
 
 On Android, use `npx expo run:android`. Those commands install dependencies, generate the native `ios/` or `android/` project from `app.json`, and launch the app. The generated native folders are not in this repository. Expo recreates them from `app.json` and the local module under `modules/item-tagging/`.
 
-On the Scan tab, **Submit** opens the camera and scans one page. **Test.** runs the same parser against `assets/testscan.jpg`. That image is not in this repository, so the Test button will fail until you add it. After a successful scan, open the Summary tab. **Save Receipt Scan** writes a Markdown table and opens the share sheet.
+On the Scan tab, **Submit** opens the camera and scans one page. After a successful scan, open the Summary tab. **Save Receipt Scan** writes a Markdown table and opens the share sheet.
+
+## Dependencies
+
+Runtime (`package.json` `dependencies`):
+
+- `@react-native-ml-kit/text-recognition` ^2.0.0
+- `expo` ~57.0.24
+- `expo-constants` ~57.0.19
+- `expo-file-system` ~57.0.7
+- `expo-linking` ~57.0.10
+- `expo-router` ~57.0.22
+- `expo-sharing` ~57.0.22
+- `expo-splash-screen` ~57.0.9
+- `item-tagging` `file:./modules/item-tagging` (local module)
+- `react` 19.2.3
+- `react-native` 0.86.3
+- `react-native-document-scanner-plugin` ^2.0.4
+- `react-native-safe-area-context` ~5.7.0
+- `react-native-screens` ~4.26.0
+
+Development (`package.json` `devDependencies`):
+
+- `@react-native/typescript-config` ^0.87.1
+- `@types/react` ~19.2.2
+- `eslint` ^9.0.0
+- `eslint-config-expo` ~57.0.2
+- `typescript` ~6.0.3
 
 ## What each part does
 
-`src/app/_layout.tsx` is the root layout. It wraps the app in `ScanProvider` and shows two tabs, Scan and Summary.
+### App Routes
+`src/app/_layout.tsx` is the root layout. It adds Expo Router's Native Tabs, allowing navigation with iOS-styled tabs at the bottom of the screen. It wraps the app in `ScanProvider` and shows two tabs, Scan and Summary.
+`src/app/index.tsx` is a landing page - immediately redirects to the Scan tab.
+`src/app/scan.tsx` is the scan screen. Submit calls `takeScan`. 
+`src/app/summary.tsx` reads that shared state. Before a scan it says “No scan yet!”. After a scan it shows a representation of what was scanned of the receipt and the save button, which calls `Receipt2Md`.
 
-`src/app/index.tsx` immediately redirects to the Scan tab.
+### Shared state
+`src/context/receiptContext.tsx` holds the React "context" for this app, including state variables for whether the user has scanned a receipt and the items that have been returned from processing. Both tabs read and write the same state, so there is no backend and no route parameters for the receipt. In addition to this global context, useState is called to define "setter" functions for these variables.
 
-`src/app/scan.tsx` is the scan screen. Submit calls `takeScan`. The Test button calls `testImageScan`. Either path stores the header and line items in shared state.
+### Data Typing
+`src/types/receipt_types.tsx` defines `ReceiptHeaderItem` (date, location, total), `ReceiptLineItem` (id, text, price), and the context value type. These are then grouped into a `ReceiptScanResult` which bundles the two lower data types.
 
-`src/app/summary.tsx` reads that shared state. Before a scan it says “No scan yet!”. After a scan it shows the summary and the save button, which calls `Receipt2Md`.
-
-`src/context/receiptContext.tsx` holds `hasScanned`, the header, and the line items. Both tabs read and write the same state, so there is no backend and no route parameters for the receipt.
-
-`src/types/receipt_types.tsx` defines `ReceiptHeaderItem` (date, location, total), `ReceiptLineItem` (id, text, price), and the context value type.
-
+### Logic
 `src/scripts/scan.tsx` is the parser.
 
 - `takeScan` opens the document scanner and passes the cropped image to OCR.
@@ -47,13 +79,18 @@ On the Scan tab, **Submit** opens the camera and scans one page. **Test.** runs 
 
 `modules/item-tagging/` is a local Expo module, wired in through `package.json` as `"item-tagging": "file:./modules/item-tagging"`. On iOS, `ItemTaggingModule.swift` uses `NSDataDetector` to find the first street address and returns street, city, state, and ZIP. On Android, `analyzeText` currently returns null, so location detection is iOS-only. The TypeScript entry point is `modules/item-tagging/src/index.ts`.
 
-`app.json` is the Expo config: app name, icons, the `receiptbuddy` URL scheme, camera and photo permission strings, and the config plugins for the document scanner, image picker, file sharing, and splash screen. `package.json` and `package-lock.json` pin the dependency versions. `tsconfig.json` maps `@/` to `src/`. `eslint.config.js` uses the Expo ESLint config.
+`app.json` is the Expo config: app name, icons, the `receiptbuddy` URL scheme, the document-scanner camera permission, and the config plugins for the document scanner, file sharing, and splash screen. `package.json` and `package-lock.json` pin the dependency versions. `tsconfig.json` maps `@/` to `src/`. `eslint.config.js` uses the Expo ESLint config.
 
 ## Design choices
 
-Receipt data stays in React context instead of a database. A scan is one short-lived result that both tabs need at the same time, and nothing in the app has to survive a restart.
+Ideally, I would have implemented a connection with SQLite to store these receipts as items in a DB - but alas, I wanted to actually finish the project! For next time.
 
-Item rows are paired by position on the page rather than by assuming the name and the price are already one OCR line. Grocery receipts often put the description and the price in different columns, and ML Kit returns them as separate lines. Matching a price to the text that sits on the same horizontal band survives that layout. Summary rows (tax, subtotal, coupons, change) use a separate list of regular expressions so those amounts are not added as products. The grand total is still kept, but only on the header.
+Receipt data stays in React context instead of a database. A scan is one short-lived result that both tabs need at the same time, and nothing in the app has to survive a restart. I figured that merely saving them as a small markdown file for safe keeping was a fine way to start. (I want to start getting rid of paper copies as soon as possible!)
+
+Item rows are paired by position on the page rather than by assuming the name and the price are already one OCR line. Grocery receipts often put the description and the price in different columns, and ML Kit returns them as separate lines. Matching a price to the text that sits on the same horizontal band survives that layout.
+This uses a 2D collision approach called 'Center-Line Intersection' or 1D Bounding Box Overlap.
+
+Summary rows (tax, subtotal, coupons, change) use a separate list of regular expressions so those amounts are not added as products. The grand total is still kept, but only on the header.
 
 Address detection lives in a native module because iOS already has a detector for postal addresses. A hand-written pattern for every store header would be easier to get wrong. Android does not use that detector yet, which is why `analyzeText` returns null there.
 
