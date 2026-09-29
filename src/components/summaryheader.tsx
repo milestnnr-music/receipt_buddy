@@ -1,3 +1,4 @@
+// Header items showing when and where you bought stuff
 import { scanContext } from "@/context/receiptContext";
 import { useContext } from "react";
 import { Text, View } from "react-native";

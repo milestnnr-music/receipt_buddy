@@ -1,8 +1,9 @@
+// Nest the entire app within a "Native Tabs" component for navigation, and give it the app wide context "Scan Provider"
 import ScanProvider from "@/context/receiptContext";
 import { NativeTabs } from "expo-router/unstable-native-tabs";
 
 export default function TabLayout() {
-   return (
+	return (
 		<ScanProvider>
 			<NativeTabs>
 				<NativeTabs.Trigger name="scan">

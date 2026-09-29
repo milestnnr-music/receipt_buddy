@@ -1,3 +1,4 @@
+// A containing list for all of the summary items, uses the scanItems context.
 import SummaryItem from "@/components/summaryitem";
 import { scanContext } from "@/context/receiptContext";
 import { useContext } from "react";

@@ -1,3 +1,4 @@
+// Each item's containing component
 import { Text, View } from "react-native";
 
 export default function SummaryItem(item: { text: string; price: number }) {

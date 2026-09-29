@@ -1,3 +1,4 @@
+// Simple scan screen, with a button to open the scanning function
 import HeaderText from "@/components/header-text";
 import ScreenShell from "@/components/screenshell";
 import SubmitButton from "@/components/submit-button";

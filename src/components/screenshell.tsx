@@ -1,3 +1,4 @@
+// A utility component, using the Safe Area provider/view to make sure nothing goes off the screen.
 import { StyleSheet } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 

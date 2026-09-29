@@ -1,10 +1,12 @@
+// A custom button that specifcally calls the takeScan function in the scan script
 import { scanContext } from "@/context/receiptContext";
 import { takeScan } from "@/scripts/scan";
 import { useContext } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function SubmitButton() {
-	const { setHasScanned, setScanHeader, setScanItems } = useContext(scanContext);
+	const { setHasScanned, setScanHeader, setScanItems } =
+		useContext(scanContext);
 
 	async function handlePress() {
 		const scanResult = await takeScan();
@@ -14,7 +16,7 @@ export default function SubmitButton() {
 			setHasScanned(true);
 		}
 	}
-	
+
 	return (
 		<View>
 			<Pressable

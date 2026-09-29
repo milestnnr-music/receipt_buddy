@@ -1,3 +1,4 @@
+// Display the total (and anything else that isn't items or metadata)
 import { scanContext } from "@/context/receiptContext";
 import { useContext } from "react";
 import { View } from "react-native";

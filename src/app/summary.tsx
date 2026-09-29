@@ -1,3 +1,4 @@
+// Render either a summary of the receipt, with the info captured - or nothing if no scan exists.
 import HeaderText from "@/components/header-text";
 import ScreenShell from "@/components/screenshell";
 import SummaryBox from "@/components/summarybox";
@@ -19,7 +20,9 @@ export default function Summary() {
 		<ScreenShell>
 			<View style={{ flex: 1, bottom: 50 }}>
 				<HeaderText header={hasScanned ? "Receipt Summary" : "No scan yet!"} />
-				{hasScanned && <Button title="Save Receipt Scan" onPress={handleShareReceipt} />}
+				{hasScanned && (
+					<Button title="Save Receipt Scan" onPress={handleShareReceipt} />
+				)}
 			</View>
 			<View style={{ flex: 3, alignItems: "center" }}>
 				{hasScanned && <SummaryBox />}

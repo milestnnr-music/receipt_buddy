@@ -1,3 +1,4 @@
+// High level component to organize everything in the summary.
 import SummaryHeader from "@/components/summaryheader";
 import SummaryList from "@/components/summarylist";
 import { View } from "react-native";

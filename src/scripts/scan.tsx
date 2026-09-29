@@ -1,4 +1,12 @@
-import { ReceiptHeaderItem, ReceiptLineItem, ReceiptScanResult } from "@/types/receipt_types";
+// The main scanning script logic.
+// Call the Google ML Kit TextRecognition API, get just the "lines" read in rather than full blocks
+// Separate them out, and get the items, their associated prices - and separately information about the receipt
+
+import {
+	ReceiptHeaderItem,
+	ReceiptLineItem,
+	ReceiptScanResult,
+} from "@/types/receipt_types";
 import TextRecognition from "@react-native-ml-kit/text-recognition";
 import ItemTaggingModule from "item-tagging";
 import DocumentScanner from "react-native-document-scanner-plugin";
@@ -16,7 +24,7 @@ const SUMMARY_LABEL_RES: RegExp[] = [
 	/^\s*change\b/i,
 	/^\s*balance\s+due\b/i,
 	/^\s*amount\s+due\b/i,
-  ];
+];
 
 // Have a simple regex just to find the $ sign
 const price_re = new RegExp("^[$]");
@@ -60,8 +68,6 @@ export const takeScan = async () => {
 	}
 };
 
-
-
 export const ImageOCR = async (uri: string) => {
 	try {
 		// Asks TextRecognition to find text
@@ -70,7 +76,10 @@ export const ImageOCR = async (uri: string) => {
 			const totalItems = getReceiptItems(result);
 			const receiptStartIndex = getReceiptStartIndex(totalItems);
 			const receiptEndIndex = getReceiptEndIndex(totalItems);
-			const receiptBodyItems = totalItems.slice(receiptStartIndex, receiptEndIndex);
+			const receiptBodyItems = totalItems.slice(
+				receiptStartIndex,
+				receiptEndIndex,
+			);
 			const receiptHeaderItems = totalItems.slice(0, receiptStartIndex);
 			const receiptHeader = parseReceiptHeader(totalItems);
 			const receiptAddress = await parseReceiptAddress(receiptHeaderItems);
@@ -204,7 +213,11 @@ export const parseReceiptHeader = (items: OCRTextItem[]) => {
 			}
 		}
 	}
-	const header: ReceiptHeaderItem = { date: date ?? "", total: total ?? 0, location: "" };
+	const header: ReceiptHeaderItem = {
+		date: date ?? "",
+		total: total ?? 0,
+		location: "",
+	};
 	return header;
 };
 
@@ -212,14 +225,24 @@ export const parseReceiptHeader = (items: OCRTextItem[]) => {
 // TODO: Add the address to the header
 
 const parseReceiptAddress = async (items: OCRTextItem[]) => {
-	const address = await ItemTaggingModule.analyzeText(items.map((item) => item.text).join(" "));
+	const address = await ItemTaggingModule.analyzeText(
+		items.map((item) => item.text).join(" "),
+	);
 	// If we get an address, assemble it into a string - if nothing was detected for the field, leave it blank
 	if (address) {
 		console.log(`Address: ${JSON.stringify(address, null, 2)}`);
-		return (address.street || "") + " " + (address.city || "") + " " + (address.state || "") + " " + (address.zip || "");
+		return (
+			(address.street || "") +
+			" " +
+			(address.city || "") +
+			" " +
+			(address.state || "") +
+			" " +
+			(address.zip || "")
+		);
 	}
 	return "";
-}
+};
 
 // Parses the price value from the text
 export const parsePriceValue = (text: string) => {
@@ -238,7 +261,10 @@ export function isSummaryLabel(text: string) {
 
 /** Collapse whitespace and strip trailing punctuation — for summary label regexes */
 export function normalizeLabelText(text: string) {
-	return text.trim().replace(/\s+/g, " ").replace(/[.,:;]+$/g, "");
+	return text
+		.trim()
+		.replace(/\s+/g, " ")
+		.replace(/[.,:;]+$/g, "");
 }
 
 // Normalizes price OCR text by removing all spaces (e.g. "$6  .99" → "$6.99")

@@ -1,3 +1,4 @@
+// Page level headers for each tab
 import { Text, TextStyle } from "react-native";
 
 // Define a base styling irrespective of page

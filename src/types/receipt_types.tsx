@@ -1,3 +1,4 @@
+// TypeScript "interfaces" - canonical data 'shapes' objects need to take
 import type { Dispatch, SetStateAction } from "react";
 
 export interface ReceiptLineItem {
