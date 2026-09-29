@@ -14,6 +14,7 @@ export default function SummaryItem(item: { text: string; price: number }) {
 				borderColor: "lightgrey",
 				borderWidth: 1,
 				borderRadius: 5,
+				marginTop: 5,
 			}}
 		>
 			<View style={{ width: "50%" }}>

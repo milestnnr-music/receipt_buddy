@@ -132,7 +132,9 @@ Address detection lives in a native module because iOS already has a detector fo
 ## Future
 
 Some of the issues I worked on appear in fields like Computational Geometry and Collision Detection - a major topic in web, UI, UX and game design. It's tricky and I built a rather simple implementation, good enough for a short little project like this.. Almost useful.
-Dealing with a balance of structured, unstructured data, Natural Language and API responses is a lot of what is done on the cutting edge today. I'm not dealing with a ton of data so I could build a rather simple implementation.. But pulling more information out of it could be good. I see a future version where I could add features like storing data - but also categorizing items, cleaning up unclear API responses, performing calculations on the data across a user's DB of receipts.. Things that more fully featured finance apps do with your bank statements as a whole. (The app would do that just for receipts)
+Still missing a lot of items - and not reading them right.
+Dealing with a balance of structured, unstructured data, Natural Language and API responses is a lot of what is done on the cutting edge today. I'm not dealing with a ton of data so I could build a rather simple implementation.. But pulling more information out of it could be good. I see a future version where I could add features like storing data - but also categorizing items, cleaning up unclear API responses, performing calculations on the data across a user's DB of receipts. (Like parsing dates that come in multiple forms, different currency types)
+Things that more fully featured finance apps do with your bank statements as a whole. (The app would do that just for receipts)
 Also: It could definetly be a little prettier.. UI is hard!
 
 ## What is not in this repository

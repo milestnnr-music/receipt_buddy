@@ -41,6 +41,22 @@ const total_re = /^\s*(?:grand\s+)?total\b(?!s\b)/i; // "grand" is optional, "to
 // Dates will have ##/##/#### formatting
 const date_re = new RegExp("[0-9]{1,2}[/][0-9]{1,2}[/][0-9]{4}");
 
+// If dates are spelled out - we should get that, only after the first regex fails
+// They might be written out with month names
+const date_spelledout_re: RegExp[] = [
+	/^\s*january.+\b/i,
+	/^\s*february.+\b/i,
+	/^\s*march.+\b/i,
+	/^\s*april.+\b/i,
+	/^\s*june.+\b/i,
+	/^\s*july.+\b/i,
+	/^\s*august.+\b/i,
+	/^\s*october.+\b/i,
+	/^\s*september.+\b/i,
+	/^\s*november.+\b/i,
+	/^\s*december.+\b/i,
+];
+
 // Special data types for the receipt items
 interface OCRTextItem {
 	text: string;
@@ -213,6 +229,17 @@ export const parseReceiptHeader = (items: OCRTextItem[]) => {
 			}
 		}
 	}
+	// If the data is still null - there was no date explicitly written using the mm/dd/yyyy format, check the other regex
+	// Could be another moment to use ML Kit or NSDataDetector!
+	if (date === null) {
+		let possible_date;
+		for (const item of items) {
+			possible_date = SpelledDate(item.text);
+			if (possible_date) {
+				date = possible_date;
+			}
+		}
+	}
 	const header: ReceiptHeaderItem = {
 		date: date ?? "",
 		total: total ?? 0,
@@ -220,9 +247,6 @@ export const parseReceiptHeader = (items: OCRTextItem[]) => {
 	};
 	return header;
 };
-
-// TODO: Grab the items returned by the ItemTaggingModule and parse the address from them
-// TODO: Add the address to the header
 
 const parseReceiptAddress = async (items: OCRTextItem[]) => {
 	const address = await ItemTaggingModule.analyzeText(
@@ -270,4 +294,17 @@ export function normalizeLabelText(text: string) {
 // Normalizes price OCR text by removing all spaces (e.g. "$6  .99" → "$6.99")
 export function normalizeText(text: string) {
 	return text.trim().replace(/\s+/g, "");
+}
+
+// Quickly searches all regexes for all the data passed in. (The header)
+export function SpelledDate(text: string) {
+	let dateMatches = [];
+	for (const re of date_spelledout_re) {
+		let match;
+		while ((match = re.exec(text)) !== null) {
+			dateMatches.push(match[0]);
+			return dateMatches[0];
+		}
+	}
+	return null;
 }
