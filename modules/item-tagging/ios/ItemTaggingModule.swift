@@ -10,7 +10,7 @@ public class ItemTaggingModule: Module {
     Name("ItemTagging")
 
     // Interface with the NLDataDetector API
-    AsyncFunction("analyzeText") { (input: String?) -> [String: String]? in
+    AsyncFunction("analyzeText") { (input: String) -> [String: String]? in
       let raw = input
       let text = raw.trimmingCharacters(in: .whitespacesAndNewlines)
       return ItemTaggingAddressDetector.detectFirstAddress(in: text)

@@ -11,18 +11,17 @@ export default function SummaryItem(item: { text: string; price: number }) {
 				flex: 1,
 				flexDirection: "row",
 				justifyContent: "space-between",
+				borderColor: "lightgrey",
+				borderWidth: 1,
+				borderRadius: 5,
 			}}
 		>
-			<View
-				style={{ width: "50%", borderBottomWidth: 1, borderColor: "lightgray" }}
-			>
+			<View style={{ width: "50%" }}>
 				<Text style={{ color: "black", fontSize: 20 }}>{item.text}</Text>
 			</View>
 			<View
 				style={{
 					width: "50%",
-					borderBottomWidth: 1,
-					borderColor: "lightgray",
 					alignItems: "center",
 				}}
 			>

@@ -8,9 +8,6 @@ export default function SummaryBox() {
 	return (
 		<View
 			style={{
-				borderColor: "black",
-				borderWidth: 1,
-				borderRadius: 5,
 				height: "100%",
 				width: "90%",
 			}}

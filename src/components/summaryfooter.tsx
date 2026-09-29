@@ -10,7 +10,14 @@ export default function SummaryFooter() {
 		return null;
 	}
 	return (
-		<View style={{ backgroundColor: "gray", height: "15%", width: "100%" }}>
+		<View
+			style={{
+				backgroundColor: "white",
+				height: "15%",
+				width: "100%",
+				borderRadius: 5,
+			}}
+		>
 			<SummaryItem text="TOTAL" price={scanHeader.total}></SummaryItem>
 		</View>
 	);

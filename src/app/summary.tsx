@@ -24,7 +24,7 @@ export default function Summary() {
 					<Button title="Save Receipt Scan" onPress={handleShareReceipt} />
 				)}
 			</View>
-			<View style={{ flex: 3, alignItems: "center" }}>
+			<View style={{ flex: 3, alignItems: "center", bottom: 10 }}>
 				{hasScanned && <SummaryBox />}
 			</View>
 		</ScreenShell>

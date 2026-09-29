@@ -12,12 +12,16 @@ export default function SummaryList() {
 		return null;
 	}
 	return (
-		<View>
+		<View style={{ paddingBottom: 10 }}>
 			<FlatList
 				style={{
-					backgroundColor: "lightgray",
+					backgroundColor: "white",
 					height: "65%",
 					width: "100%",
+					borderRadius: 5,
+					borderColor: "lightgrey",
+					borderWidth: 1,
+					padding: 3,
 				}}
 				data={scanItems}
 				renderItem={({ item, index }) => <SummaryItem key={index} {...item} />}

@@ -10,6 +10,7 @@ export const Receipt2Md = async (result: ReceiptScanResult): Promise<void> => {
 	md += `# Receipt - ${result.header?.date}\n`;
 	md += `Store Location: ${result.header?.location}\n`;
 	md += `Total: ${result.header?.total}\n\n`;
+	md += `Items Count: ${result.items.length}`;
 	md += `| Item | Price |\n`;
 	md += `| --- | --- |\n`;
 	for (const item of result.items ?? []) {
