@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["ItemTaggingModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.itemtagging.ItemTaggingModule"]
+  }
+}
