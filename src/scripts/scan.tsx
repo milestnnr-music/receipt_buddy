@@ -1,6 +1,5 @@
 import { ReceiptHeaderItem, ReceiptLineItem, ReceiptScanResult } from "@/types/receipt_types";
 import TextRecognition from "@react-native-ml-kit/text-recognition";
-import { Asset } from "expo-asset";
 import ItemTaggingModule from "item-tagging";
 import DocumentScanner from "react-native-document-scanner-plugin";
 
@@ -61,18 +60,6 @@ export const takeScan = async () => {
 	}
 };
 
-export const testImageScan = async () => {
-	try {
-		const [asset] = await Asset.loadAsync(require("@/assets/testscan.jpg"));
-
-		if (asset.localUri) {
-			const scanResult = await ImageOCR(asset.localUri);
-			return scanResult;
-		}
-	} catch (error) {
-		console.error("OCR Test Failed:", error);
-	}
-};
 
 
 export const ImageOCR = async (uri: string) => {
