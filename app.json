@@ -51,14 +51,6 @@
           "imageWidth": 200
         }
       ],
-      [
-        "expo-image-picker",
-        {
-          "cameraPermission": "The app accesses your camera to allow you to scan receipts.",
-          "photosPermission": "The app accessses your photos to allow you to select photos of receipts to be analyzed."
-        }
-      ],
-      "expo-asset",
       "expo-sharing"
     ],
     "experiments": {
