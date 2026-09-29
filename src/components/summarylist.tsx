@@ -3,8 +3,6 @@ import { scanContext } from "@/context/receiptContext";
 import { useContext } from "react";
 import { FlatList, View } from "react-native";
 
-
-
 // Display items in a FlatList - each line in data will be an item
 // from the receipt - which gets passed in and made into
 export default function SummaryList() {

@@ -19,7 +19,10 @@ export default function SummaryHeader() {
 			}}
 		>
 			<Text style={{ color: "black", fontSize: 20 }}> {scanHeader?.date} </Text>
-			<Text style={{ color: "black", fontSize: 15 }}> {scanHeader?.location} </Text>
+			<Text style={{ color: "black", fontSize: 15 }}>
+				{" "}
+				{scanHeader?.location}{" "}
+			</Text>
 		</View>
 	);
 }

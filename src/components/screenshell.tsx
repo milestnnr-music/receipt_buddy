@@ -7,12 +7,14 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default function ScreenShell({ children }: { children: React.ReactNode }) {
+export default function ScreenShell({
+	children,
+}: {
+	children: React.ReactNode;
+}) {
 	return (
 		<SafeAreaProvider>
-			<SafeAreaView style={styles.container}>
-				{children}
-			</SafeAreaView>
+			<SafeAreaView style={styles.container}>{children}</SafeAreaView>
 		</SafeAreaProvider>
 	);
 }

@@ -12,10 +12,19 @@ export default function SummaryItem(item: { text: string; price: number }) {
 				justifyContent: "space-between",
 			}}
 		>
-			<View style={{ width: "50%", borderBottomWidth: 1, borderColor: "lightgray" }}>
+			<View
+				style={{ width: "50%", borderBottomWidth: 1, borderColor: "lightgray" }}
+			>
 				<Text style={{ color: "black", fontSize: 20 }}>{item.text}</Text>
 			</View>
-			<View style={{ width: "50%", borderBottomWidth: 1, borderColor: "lightgray", alignItems: "center" }}>
+			<View
+				style={{
+					width: "50%",
+					borderBottomWidth: 1,
+					borderColor: "lightgray",
+					alignItems: "center",
+				}}
+			>
 				<Text style={{ color: "black", fontSize: 20 }}>{item.price}</Text>
 			</View>
 		</View>
