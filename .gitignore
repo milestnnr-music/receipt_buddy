@@ -13,10 +13,17 @@ expo-env.d.ts
 .kotlin/
 *.orig.*
 *.jks
+*.keystore
 *.p8
 *.p12
 *.key
 *.mobileprovision
+google-services.json
+GoogleService-Info.plist
+local.properties
+**/secrets/
+credentials.json
+service-account*.json
 
 # Metro
 .metro-health-check*
@@ -32,7 +39,8 @@ yarn-error.*
 
 # local env files
 .env
-.env*.local
+.env.*
+!.env.example
 
 # editor and local agent config
 .cursor/
@@ -49,3 +57,7 @@ example
 # generated native folders
 /ios
 /android
+
+# local submission bundles (CS50 zip copies, etc.)
+*_submit/
+receipt_buddy.zip
