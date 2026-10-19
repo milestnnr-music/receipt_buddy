@@ -1,14 +1,14 @@
 # Receipt Buddy
 
-**Video:**
+"Do you want your receipt?"
+Such a common question - and I always say yes for "safe keeping".
+But where the heck should you keep them?
+
+**Demo Video:**
 The full video is here:
 https://youtube.com/shorts/n2bw0t7dW60
 
-"Do you want your receipt?"
-Such a common question - and I always say yes for "safe keeping".
-But where the heck should you keep them?!
-
-Receipt Buddy is a phone app that turns a photo of a grocery receipt into a structured list. You scan a receipt, the app reads the text on the page, and it separates that text into a date, a store address, a total, and individual items with prices. The Summary tab shows that result. From there you can save it as a Markdown file and hand it to the phone’s share sheet. (With a potentially to save and store using SQLite)
+Receipt Buddy is a phone app that turns a photo of a grocery receipt into a structured list. You scan a receipt, the app reads the text on the page, and it separates that text into a date, a store address, a total, and individual items with prices. The Summary tab shows that result. From there you can save it as a Markdown file and hand it to the phone’s share sheet. (With the potential to save and store receipts using SQLite in a future version.)
 
 The app is built with React Native and Expo. Navigation uses Expo Router. The scanning page uses the iOS document scanner that allows you to scan your receipt. Text recognition runs on the device with ML Kit, so the receipt text is not sent to a server. A small local "native" Expo module, `item-tagging`, finds a street address in the header text - written in Swift.
 
@@ -52,12 +52,12 @@ Development (`package.json` `devDependencies`):
 - `eslint-config-expo` ~57.0.2
 - `typescript` ~6.0.3
 
-Learn more about the third party libraries/features I used:
+Learn more about the third-party libraries/features I used:
 
 - Google ML Kit: https://developers.google.com/ml-kit/vision/text-recognition/v2
 - Apple NSDataDetector (within Foundation): https://developer.apple.com/documentation/foundation/nsdatadetector
 
-More documentation I relied upon for answers, and questions to pose to LLM's:
+More documentation I relied upon for answers, and questions to pose to LLMs:
 
 - https://react-typescript-cheatsheet.netlify.app/
 - https://react.dev/reference/react
@@ -74,7 +74,7 @@ More documentation I relied upon for answers, and questions to pose to LLM's:
 `src/app/_layout.tsx` is the root layout. It adds Expo Router's Native Tabs, allowing navigation with iOS-styled tabs at the bottom of the screen. It wraps the app in `ScanProvider` and shows two tabs, Scan and Summary.
 `src/app/index.tsx` is a landing page - immediately redirects to the Scan tab.
 `src/app/scan.tsx` is the scan screen. Submit calls `takeScan`.
-`src/app/summary.tsx` reads that shared state. Before a scan it says “No scan yet!”. After a scan it shows a representation of what was scanned of the receipt and the save button, which calls `Receipt2Md`.
+`src/app/summary.tsx` reads that shared state. Before a scan it says “No scan yet!”. After a scan it shows a representation of the scanned receipt and the save button, which calls `Receipt2Md`.
 
 ### Shared state
 
@@ -99,8 +99,8 @@ More documentation I relied upon for answers, and questions to pose to LLM's:
 ### React Components
 
 From the top down:
-`screenshell.tsx` applies a safe-area layout for each page (so information doesn't bleed off the page)
-`header-text.tsx` is used for any large, page level screen titles.
+`screenshell.tsx` applies a safe-area layout for each page (so information doesn't bleed off the page).
+`header-text.tsx` is used for any large, page-level screen titles.
 `src/components/submit-button.tsx` is the scan button.
 
 Using the general mindset that React motivates - to decompose UI into small elements:
@@ -122,14 +122,14 @@ The entry point from this Swift module to the rest of the app is `modules/item-t
 
 ## Design choices and AI usage
 
-This was tricky because I wanted to make a useful phone app.. using some tech we had studied in CS50, while learning a new thing.. And crucially have it be actually compiled to your phone, not a web app. (To use it offline, or out of the house and to keep the data yourself!)
-This led me to React Native, which I had a bit of exposure to through trying to make some sites using React for the web. This fit the bill, as I'd be using Javascript combined with HTML and CSS - something React calls JSX.. And also using TypeScript's syntax and type checker to make sure that I didn't break any of React's native data types.
+This was tricky because I wanted to make a useful phone app, using some tech we had studied in CS50, while learning a new thing. And crucially have it be actually compiled to your phone, not a web app. (To use it offline, or out of the house and to keep the data yourself!)
+This led me to React Native, which I had a bit of exposure to through trying to make some sites using React for the web. This fit the bill, as I'd be using JavaScript combined with HTML and CSS — something React calls JSX. And also using TypeScript's syntax and type checker to make sure that I didn't break any of React's native data types.
 It was made a lot easier by using the Expo frameworks, for time's sake.
 
-AI usage was interestingly two fold - I wrote a lot of logic myself, and scoped out the issues. Only asking questions to Gemini outside the IDE for general direction. As I got into trickier elements of the app (like making my own TypeScript data types, connecting a Swift module to the rest of the app..) I then switched to Cursor, specifically it's Ask Mode.
-I tried to keep this heuristic in mind..
+AI usage was interestingly twofold — I wrote a lot of logic myself, and scoped out the issues, only asking questions to Gemini outside the IDE for general direction. As I got into trickier elements of the app (like making my own TypeScript data types, connecting a Swift module to the rest of the app…) I then switched to Cursor, specifically its Ask Mode.
+I tried to keep this heuristic in mind:
 I should, at a minimum, write the first lines and the last lines.
-In the middle, I didn't ask the agent to write but used Ask Mode along with slowly going through, implementing what I thought I needed to, and using the "tab" complete for small helper functions and complex Regex patterns I didn't want to mess up. Ocasionally I ran into bugs which had to do with version histories (like what version was on my testing build vs. what I had written and what I had downloaded) and other corner cases that the "Debug" mode was useful in so far as it always explained what was going wrong.
+In the middle, I didn't ask the agent to write but used Ask Mode along with slowly going through, implementing what I thought I needed to, and using the "tab" complete for small helper functions and complex regex patterns I didn't want to mess up. Occasionally I ran into bugs which had to do with version histories (like what version was on my testing build vs. what I had written and what I had downloaded) and other corner cases where the "Debug" mode was useful insofar as it always explained what was going wrong.
 I found myself in some moments really not understanding - there I took the time to rely on those CS50 skills! Read the docs, check sample usage and common faults. I used "Ask Mode" to help guide me to the right sources - to some amount of success. (Apple's documentation is really not made for beginners.)
 
 ---
@@ -144,15 +144,15 @@ This uses a 2D collision approach called 'Center-Line Intersection' or 1D Boundi
 Summary rows (tax, subtotal, coupons, change) use a separate list of regular expressions so those amounts are not added as products. The grand total is still kept, but only on the "header"/metadata.
 Later I might display the amount of items scanned as a bit of metadata too.
 
-Address detection lives in a native module because iOS already has a detector for postal addresses. A hand-written pattern for every store header would be easier to get wrong. (Android does not use that detector yet, which is why `analyzeText` returns null there... I used iOS specific tools.)
+Address detection lives in a native module because iOS already has a detector for postal addresses. A hand-written pattern for every store header would be easier to get wrong. (Android does not use that detector yet, which is why `analyzeText` returns null there… I used iOS-specific tools.)
 
 ## Future
 
-Some of the issues I worked on appear in fields like Computational Geometry and Collision Detection - a major topic in web, UI, UX and game design. It's tricky and I built a rather simple implementation, good enough for a short little project like this.. Almost useful.
+Some of the issues I worked on appear in fields like Computational Geometry and Collision Detection — a major topic in web, UI, UX and game design. It's tricky and I built a rather simple implementation, good enough for a short little project like this. Almost useful.
 Still missing a lot of items - and not reading them right.
-Dealing with a balance of structured, unstructured data, Natural Language and API responses is a lot of what is done on the cutting edge today. I'm not dealing with a ton of data so I could build a rather simple implementation.. But pulling more information out of it could be good. I see a future version where I could add features like storing data - but also categorizing items, cleaning up unclear API responses, performing calculations on the data across a user's DB of receipts. (Like parsing dates that come in multiple forms, different currency types)
+Dealing with a balance of structured, unstructured data, natural language, and API responses is a lot of what is done on the cutting edge today. I'm not dealing with a ton of data so I could build a rather simple implementation. But pulling more information out of it could be good. I see a future version where I could add features like storing data - but also categorizing items, cleaning up unclear API responses, performing calculations on the data across a user's DB of receipts. (Like parsing dates that come in multiple forms, different currency types)
 Things that more fully featured finance apps do with your bank statements as a whole. (The app would do that just for receipts)
-Also: It could definetly be a little prettier.. UI is hard!
+Also: It could definitely be a little prettier. UI is hard!
 
 ## What is not in this repository
 
