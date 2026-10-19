@@ -120,7 +120,9 @@ The entry point from this Swift module to the rest of the app is `modules/item-t
 
 `app.json` is the Expo config: app name, icons, the `receiptbuddy` URL scheme, the document-scanner camera permission, and the config plugins for the document scanner, file sharing, and splash screen. `package.json` and `package-lock.json` pin the dependency versions. `tsconfig.json` maps `@/` to `src/`. `eslint.config.js` uses the Expo ESLint config.
 
-## Design choices and AI usage
+## How this was built
+
+**The first version of this app was made in about a week, for a CS50x Final Project.**
 
 This was tricky because I wanted to make a useful phone app, using some tech we had studied in CS50, while learning a new thing. And crucially have it be actually compiled to your phone, not a web app. (To use it offline, or out of the house and to keep the data yourself!)
 This led me to React Native, which I had a bit of exposure to through trying to make some sites using React for the web. This fit the bill, as I'd be using JavaScript combined with HTML and CSS — something React calls JSX. And also using TypeScript's syntax and type checker to make sure that I didn't break any of React's native data types.
